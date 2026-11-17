@@ -15,3 +15,11 @@ def list_children(directory: Path) -> list[Path]:
 
 def is_regular_file(path: Path) -> bool:
     return S_ISREG(path.lstat().st_mode)
+
+
+def direct_file_bytes(directory: Path) -> int:
+    total_bytes = 0
+    for child in list_children(directory):
+        if is_regular_file(child):
+            total_bytes += logical_file_size(child)
+    return total_bytes
