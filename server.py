@@ -1,7 +1,10 @@
+from argparse import ArgumentParser
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from pathlib import Path
 from urllib.parse import urlsplit
 
 from browse import folder_parts_from_url, render_page
+from snapshot import load_snapshot
 
 
 def page_for_request(snapshot: dict, target: str) -> tuple[int, str]:
@@ -28,3 +31,14 @@ def serve_snapshot(snapshot: dict, port: int = 8000) -> None:
 
     with HTTPServer(("127.0.0.1", port), ExplorerHandler) as server:
         server.serve_forever()
+
+
+if __name__ == "__main__":
+    parser = ArgumentParser(description="Browse a saved Penguin Explorer snapshot.")
+    parser.add_argument("snapshot", type=Path, help="Path to the saved JSON snapshot")
+    args = parser.parse_args()
+    try:
+        snapshot = load_snapshot(args.snapshot)
+    except (OSError, ValueError) as error:
+        parser.error(str(error))
+    serve_snapshot(snapshot)

@@ -56,9 +56,10 @@
 - After moving the source, `render_folder()` showed 15 known bytes at Root, 12 bytes at Root / TV & Film, and 0 known bytes at Root / Blocked. The blocked folder and its parent showed partial totals. All three views displayed the saved completion time.
 - In a reopened snapshot, Python’s HTML parser found the expected titles for Root and TV & Film. Both pages declared UTF-8 and one viewport with `width=device-width, initial-scale=1`. A phone layout check is pending.
 - With the source moved, `serve_snapshot()` served reopened JSON over HTTP on `127.0.0.1`. The 10-byte root and its Café & Film link returned 200, the child listed the saved 7-byte episode, and both pages showed the saved scan time. A missing folder and an unknown route returned distinct 404 messages. All four responses declared UTF-8 HTML and the exact body length in bytes. The temporary server was stopped.
+- Launching `python3 server.py "saved scan.json"` from the checkout served the root and its TV & Film link on port 8000 with their saved totals and timestamp after the source moved. Help exited with status 0. An omitted argument, a nonexistent file, and invalid JSON each exited with status 2. The HTTP checks passed on the Mac. The visual browser check is pending.
 
 The [contributor guide](../AGENTS.md#checking-changes) includes a repeatable check. Linux and SSH verification are pending.
 
 ## Next step
 
-Add a command-line entry point that opens a saved snapshot by filename and starts the local server. A snapshot missing `completed_at` currently produces a misleading folder-missing 404. Distinguishing invalid snapshots and handling deep trees are pending. The [design brief](design.md) defines how browsing should behave.
+Open a saved snapshot from the command line and follow its folder links in a Mac browser. A snapshot missing `completed_at` currently produces a misleading folder-missing 404. Distinguishing invalid snapshots and handling deep trees are pending. The [design brief](design.md) defines how browsing should behave.
